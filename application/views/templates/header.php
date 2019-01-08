@@ -4,10 +4,12 @@
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="<?=base_url(); ?>assets/images/icon/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />        
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
+    <meta name="description" content="Sistem Informasi Umum | B4T">
+    <meta name="author" content="Faisal Syaiful Anwar">
+    <meta name="keywords" content="Sistem Informasi Umum | B4T">
 
     <!-- Title Page-->
     <title>Sistem Informasi Umum</title>

@@ -65,7 +65,7 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div class="header-button-item has-noti js-item-menu">
+                                <div class="header-button-item js-item-menu">
                                     <i class="zmdi zmdi-notifications"></i>
                                     <div class="notifi-dropdown js-dropdown">
                                         <div class="notifi__title">
@@ -164,7 +164,7 @@
                                             <li class="list-inline-item">Dashboard</li>
                                         </ul>
                                     </div>
-                                    <button class="au-btn au-btn-icon au-btn--green">
+                                    <button class="au-btn au-btn-icon au-btn--green" type="button" data-toggle="modal" data-target="#mediumModal">
                                         <i class="zmdi zmdi-plus"></i>Tambah Perjalanan</button>
                                 </div>
                             </div>
@@ -181,7 +181,7 @@
                         <div class="row">
                             <div class="col-md-6 col-lg-3">
                                 <div class="statistic__item">
-                                    <h2 class="number"><?=hari_ini(); ?><br><?=Date("j F y") ?></h2>
+                                    <h2 class="number"><?=hari_ini(); ?><br><?=Date("j F Y") ?></h2>
                                     <span class="desc">Hari ini</span>
                                     <div class="icon">
                                         <i class="zmdi zmdi-calendar"></i>
@@ -190,7 +190,7 @@
                             </div>
                             <div class="col-md-6 col-lg-3">
                                 <div class="statistic__item">
-                                    <h2 class="number">4</h2>
+                                    <h2 class="number"><?=count($drivers); ?></h2>
                                     <span class="desc">Driver Tersedia</span>
                                     <div class="icon">
                                         <i class="zmdi zmdi-male-alt"></i>
@@ -199,7 +199,7 @@
                             </div>                            
                             <div class="col-md-6 col-lg-3">
                                 <div class="statistic__item">
-                                    <h2 class="number"><?=$count_mobil; ?></h2>
+                                    <h2 class="number"><?=count($mobils); ?></h2>
                                     <span class="desc">Mobil Tersedia</span>
                                     <div class="icon">
                                         <i class="zmdi zmdi-car"></i>
@@ -208,7 +208,7 @@
                             </div>
                             <div class="col-md-6 col-lg-3">
                                 <div class="statistic__item">
-                                    <h2 class="number">Rp. 9.255.000</h2>
+                                    <h2 class="number">Rp. 0</h2>
                                     <span class="desc">Bensin Digunakan</span>
                                     <div class="icon">
                                         <i class="zmdi zmdi-gas-station"></i>
@@ -226,14 +226,14 @@
                     <div class="container-fluid">
                         <div></div>
                         <div class="row">
-                            <?php foreach($mobils as $mobil){ ?>
-                            <div class="col-md-4">
+                            <?php foreach($allmobils as $mobil){ ?>
+                            <div class="col-md-3">
                                 <aside class="profile-nav alt">
                                     <section class="card">
-                                        <div class="card-header user-header alt bg-success">
+                                        <div class="card-header user-header alt <?php if($mobil['status']==0) echo "bg-success"; else if($mobil['status'] == 1) echo "bg-warning"; else echo "bg-danger"; ?>">
                                             <div class="media">
                                                 <div class="media-body">
-                                                    <h2 class="text-light display-6"><?=$mobil['plat']; ?></h2>
+                                                    <h2 class="text-light display-6"><?=$mobil['plat']; ?> <?php if($mobil['status']==2) echo "(Rusak)";?></h2>
                                                     <p><?=$mobil['merk']; ?></p>
                                                 </div>
                                             </div>
@@ -244,13 +244,13 @@
                                             <li class="list-group-item">
                                                 <a href="#">
                                                     <i class="fa fa-tasks"></i> Total Perjalanan&nbsp;
-                                                    <span class="badge badge-danger pull-right">15</span>
+                                                    <span class="badge badge-danger pull-right">0</span>
                                                 </a>
                                             </li>
                                             <li class="list-group-item">
                                                 <a href="#">
                                                     <i class="fa fa-gear"></i> Kilometer Terakhir&nbsp;
-                                                    <span class="badge badge-primary pull-right">13000</span>
+                                                    <span class="badge badge-primary pull-right">0</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -264,4 +264,76 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Modal -->
+            <!-- modal medium -->
+            <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mediumModalLabel">Tambah Perjalanan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <?=form_open('Home/processPerjalanan',['class'=>'form-horizontal']); ?>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="drivers" class="form-control-label">Pilih Pengemudi</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <select name="driverId[]" id="multiple-select" multiple="" class="form-control" required="">
+                                            <?php foreach($drivers as $driver){ ?>
+                                            <option value="<?=$driver['id']; ?>"><?=$driver['nama'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="multiple-select" class=" form-control-label">Pilih Mobil</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <select id="req" name="mobils[]"  multiple="" class="form-control" required="">
+                                            <?php foreach($mobils as $mobil){ ?>
+                                            <option value="<?=$mobil['id']; ?>"><?=$mobil['plat']." (".$mobil['merk'].")" ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                </div>                                                              
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Maksud Perjalanan</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <textarea id="maksud" name="maksud" id="textarea-input" rows="9" placeholder="" class="form-control"></textarea>
+                                        <small class="form-text text-muted">sesuaikan dengan dokumen SPPD</small>
+                                    </div>
+                                </div> 
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Kota</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select name="select" id="select" class="form-control">
+                                            <?php foreach($kotas as $kota){ ?>
+                                            <option value="<?=$kota['id']; ?>"><?=$kota['nama'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>                                                
+                        
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <input type="submit" class="btn btn-primary" name="" value="Confirm">
+                        </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+                      
 <!-- end document-->

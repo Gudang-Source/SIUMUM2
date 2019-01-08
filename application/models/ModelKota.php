@@ -1,29 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ModelDriver extends CI_Model {
+class ModelKota extends CI_Model {
 
 	private $tableName;
 
 	public function __construct(){
 		parent::__construct();
-		$this->tableName = "driver";
+		$this->tableName = "kota";
 	}
 
-	public function selectAll(){
-		$this->db->select('*');
+	public function selectJawa(){
+		$this->db->select('kota.*');
 		$this->db->from($this->tableName);
-		$this->db->order_by('id','ASC');
+		$this->db->join('propinsi','propinsi.id = kota.propinsiId');
+		$this->db->where_in('propinsi.id', [12,13,14,15,16]);
+		// $this->db->join('propinsi','propinsi.id = kota.propinsiId');
+		// $this->db->order_by('id','ASC');
 
 		return $this->db->get();
-	}
-	public function selectAvailable(){
-		$this->db->select('*');
-		$this->db->from($this->tableName);
-		$this->db->where('status','0');
-		$this->db->order_by('id','ASC');
-
-		return $this->db->get();		
 	}
 
 	public function selectById($id){
@@ -33,6 +28,7 @@ class ModelDriver extends CI_Model {
 
 		return $this->db->get();
 	}
+
 	public function insert($data){
 		$this->db->insert($this->tableName,$data);
 	}

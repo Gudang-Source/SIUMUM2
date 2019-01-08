@@ -14,7 +14,7 @@ class ModelMobil extends CI_Model {
 		$this->db->select('*');
 		$this->db->from($this->tableName);
 		// $this->db->limit($from,$offset);
-		$this->db->order_by('id','ASC');
+		$this->db->order_by('status','ASC');
 
 		return $this->db->get();
 	}
