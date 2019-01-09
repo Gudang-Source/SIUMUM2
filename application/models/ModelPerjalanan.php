@@ -18,7 +18,17 @@ class ModelPerjalanan extends CI_Model {
 
 		return $this->db->get();
 	}
+	public function selectAllJoin(){
+		$this->db->select('perjalanan.*,driver.nama as driverName, mobil.plat, mobil.merk, kota.nama as kotaName');
+		$this->db->from($this->tableName);
+		$this->db->join('driver','driver.id = perjalanan.driverId');
+		$this->db->join('mobil','mobil.id = perjalanan.mobilId');
+		$this->db->join('kota','kota.id = perjalanan.kotaId');
+		// $this->db->limit($from,$offset);
+		$this->db->order_by('id','ASC');
 
+		return $this->db->get();
+	}
 	public function selectById($id){
 		$this->db->select('*');
 		$this->db->from($this->tableName);

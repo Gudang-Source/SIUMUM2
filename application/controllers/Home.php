@@ -9,6 +9,7 @@ class Home extends CI_Controller {
 		$data['mobils'] = $this->ModelMobil->selectByStatus(0)->result_array();
 		$data['drivers'] = $this->ModelDriver->selectAvailable()->result_array();
 		$data['kotas'] = $this->ModelKota->selectJawa()->result_array();
+		$data['perjalanans'] = $this->ModelPerjalanan->selectAllJoin()->result_array();
 		// print_r($data['mobil']);
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar');
@@ -18,6 +19,7 @@ class Home extends CI_Controller {
 
 	public function processPerjalanan(){
 		$post = $this->input->post();
-		var_dump($post);
+		$this->ModelPerjalanan->insert($post);
+
 	}
 }

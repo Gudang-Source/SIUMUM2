@@ -181,7 +181,7 @@
                         <div class="row">
                             <div class="col-md-6 col-lg-3">
                                 <div class="statistic__item">
-                                    <h2 class="number"><?=hari_ini(); ?><br><?=Date("j F Y") ?></h2>
+                                    <h2 class="number"><?=hari_ini(); ?>, <?=Date("j M") ?></h2>
                                     <span class="desc">Hari ini</span>
                                     <div class="icon">
                                         <i class="zmdi zmdi-calendar"></i>
@@ -226,39 +226,69 @@
                     <div class="container-fluid">
                         <div></div>
                         <div class="row">
-                            <?php foreach($allmobils as $mobil){ ?>
-                            <div class="col-md-3">
-                                <aside class="profile-nav alt">
-                                    <section class="card">
-                                        <div class="card-header user-header alt <?php if($mobil['status']==0) echo "bg-success"; else if($mobil['status'] == 1) echo "bg-warning"; else echo "bg-danger"; ?>">
-                                            <div class="media">
-                                                <div class="media-body">
-                                                    <h2 class="text-light display-6"><?=$mobil['plat']; ?> <?php if($mobil['status']==2) echo "(Rusak)";?></h2>
-                                                    <p><?=$mobil['merk']; ?></p>
+                            <div class="col-md-6">
+                                <h2>Mobil Tersedia</h2><hr> 
+                                <div class="row">   
+                                    <?php foreach($allmobils as $mobil){ ?>
+                                    <div class="col-md-6">
+                                        <aside class="profile-nav alt">
+                                            <section class="card">
+                                                <div class="card-header user-header alt <?php if($mobil['status']==0) echo "bg-success"; else if($mobil['status'] == 1) echo "bg-warning"; else echo "bg-danger"; ?>">
+                                                    <div class="media">
+                                                        <div class="media-body">
+                                                            <h2 class="text-light display-6"><?=$mobil['plat']; ?> <?php if($mobil['status']==2) echo "(Rusak)";?></h2>
+                                                            <p style="color:black;"><?=$mobil['merk']; ?></p>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
 
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">
-                                                <a href="#">
-                                                    <i class="fa fa-tasks"></i> Total Perjalanan&nbsp;
-                                                    <span class="badge badge-danger pull-right">0</span>
-                                                </a>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <a href="#">
-                                                    <i class="fa fa-gear"></i> Kilometer Terakhir&nbsp;
-                                                    <span class="badge badge-primary pull-right">0</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item">
+                                                        <a href="#">
+                                                            <i class="fa fa-tasks"></i> Total Perjalanan&nbsp;
+                                                            <span class="badge badge-danger pull-right">0</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <a href="#">
+                                                            <i class="fa fa-gear"></i> Kilometer Terakhir&nbsp;
+                                                            <span class="badge badge-primary pull-right">0</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
 
-                                    </section>
-                                </aside>
-                            </div>                       
-                            <?php } ?>
+                                            </section>
+                                        </aside>
+                                    </div>                       
+                                    <?php } ?>                                
+                                </div>
+                            </div>                
+                            <div class="col-md-6 table-responsive table-data">
+                                <h2>Rekapitulasi Perjalanan</h2><hr>      
+                                <table class="table table-borderless table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Supir/Mobil</th>
+                                            <th>Perjalanan</th>
+                                            <th>Kota Tujuan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i=1;foreach($perjalanans as $perjalanan){ ?>
+                                        <tr>
+                                            <td><?=$i++; ?></td>
+                                            <td><?=$perjalanan['driverName']."/".$perjalanan['plat']."(".$perjalanan['merk'].")"; ?></td>
+                                            <td><?=$perjalanan['maksud']; ?></td>
+                                            <td><?=$perjalanan['kotaName'] ?></td>
+                                        </tr>   
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+
+                            </div>                
+
                         </div>
 
                     </div>
@@ -283,7 +313,7 @@
                                         <label for="drivers" class="form-control-label">Pilih Pengemudi</label>
                                     </div>
                                     <div class="col col-md-9">
-                                        <select name="driverId[]" id="multiple-select" multiple="" class="form-control" required="">
+                                        <select name="driverId" id="multiple-select" multiple="" class="form-control" required="">
                                             <?php foreach($drivers as $driver){ ?>
                                             <option value="<?=$driver['id']; ?>"><?=$driver['nama'] ?></option>
                                             <?php } ?>
@@ -295,41 +325,64 @@
                                         <label for="multiple-select" class=" form-control-label">Pilih Mobil</label>
                                     </div>
                                     <div class="col col-md-9">
-                                        <select id="req" name="mobils[]"  multiple="" class="form-control" required="">
+                                        <select id="req" name="mobilId"  multiple="" class="form-control" required="">
                                             <?php foreach($mobils as $mobil){ ?>
                                             <option value="<?=$mobil['id']; ?>"><?=$mobil['plat']." (".$mobil['merk'].")" ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
-                                </div>
-                                <div>
-                                </div>                                                              
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label">Maksud Perjalanan</label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <textarea id="maksud" name="maksud" id="textarea-input" rows="9" placeholder="" class="form-control"></textarea>
-                                        <small class="form-text text-muted">sesuaikan dengan dokumen SPPD</small>
-                                    </div>
-                                </div> 
+                                </div>                                                          
                                 <div class="row form-group">
                                     <div class="col col-md-3">
                                         <label for="select" class=" form-control-label">Kota</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <select name="select" id="select" class="form-control">
+                                        <select name="kotaId" id="select" class="form-control">
                                             <?php foreach($kotas as $kota){ ?>
                                             <option value="<?=$kota['id']; ?>"><?=$kota['nama'] ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
-                                </div>                                                
+                                </div> 
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Maksud Perjalanan</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <textarea id="maksud" name="maksud" id="textarea-input" placeholder="" class="form-control" rows="4"></textarea>
+                                        <small class="form-text text-muted">sesuaikan dengan dokumen SPPD</small>
+                                    </div>
+                                </div> 
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Lama Perjalanan</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="row form-group">
+                                            <div class="col col-md-6">
+                                                <input type="number" name="lama" class="form-control" placeholder="... Hari">
+                                                 <small class="form-text text-muted">masukan jumlah hari dan tanggal keberangkatan</small>
+                                            </div>
+                                            <div class="col col-md-6">
+                                                <input type="date" name="tanggal" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                 
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Kilometer Terakhir</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="number" name="kilometer" class="form-control" placeholder="..... KM">
+                                        <small class="form-text text-muted">Masukkan kilometer terakhir sebelum berangkat</small>
+                                    </div>
+                                </div>                                                                                  
                         
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <input type="submit" class="btn btn-primary" name="" value="Confirm">
+                            <input type="submit" class="btn btn-primary"  value="Tambah">
                         </div>
                             </form>
                     </div>
